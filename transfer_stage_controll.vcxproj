@@ -28,7 +28,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BluetoothMotorController.cpp" />
-    <ClCompile Include="src\transfer_stage_gui.cpp" />
+    <ClCompile Include="src\callback.cpp" />
+    <ClCompile Include="src\function.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\ui.cpp" />
     <ClCompile Include="src\VectorStage.cpp" />
   </ItemGroup>
   <ItemGroup>

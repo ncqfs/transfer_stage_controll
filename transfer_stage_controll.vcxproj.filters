@@ -25,10 +25,10 @@
     <ClInclude Include="inc\targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="inc\transfer_stage_gui.h">
+    <ClInclude Include="inc\VectorStage.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="inc\VectorStage.h">
+    <ClInclude Include="inc\transfer_stage_gui.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -36,10 +36,19 @@
     <ClCompile Include="src\BluetoothMotorController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\transfer_stage_gui.cpp">
+    <ClCompile Include="src\VectorStage.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\VectorStage.cpp">
+    <ClCompile Include="src\ui.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\callback.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\function.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
