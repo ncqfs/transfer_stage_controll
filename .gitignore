@@ -1,0 +1,57 @@
+## 忽略 Visual Studio 生成的文件和文件夹
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa]nyCPU/
+ipch/
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.opendb
+*.tlog
+*.log
+*.ilk
+*.pdb
+*.idb
+*.pdb
+*.ipdb
+*.iobj
+
+## 忽略编译中间文件
+*.obj
+*.lib
+*.exp
+*.dll
+*.exe
+*.exe.config
+*.dll.config
+*.nupkg
+
+## 忽略用户特定文件
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## 忽略 Visual Studio 缓存目录
+.vs/
+
+## 忽略 Resharper 等插件目录
+_ReSharper*/
+*.ReSharper*
+
+## 忽略 NuGet 相关
+packages/
+*.nuget.targets
+
+## 忽略 CMake 生成的文件（如果使用 CMake）
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+CTestTestfile.cmake
+*.cmake
+
+## 忽略 OpenCV 等第三方库的本地路径（由环境变量管理，无需包含）
+## 注意：如果你的项目直接包含了第三方库的二进制文件，请根据需要调整
