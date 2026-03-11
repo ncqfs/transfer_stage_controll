@@ -149,6 +149,50 @@ git push origin --delete feature/你的功能名  # 删除远程分支
 
 ---
 
+以下是你需要在 README 中添加的“配置 Git 代理”部分，请根据实际位置插入（建议放在“2.4 克隆代码仓库”之后，或作为独立小节）。
+
+---
+
+### 2.5 ⚙️ 配置 Git 代理（可选，但强烈推荐）
+
+使用 Clash for Windows 等代理软件访问 GitHub，Git 命令行默认不会自动使用代理，需要手动配置，否则 `git clone` 或 `git push` 可能会连接失败。
+
+#### 1️⃣ 查看代理端口
+打开 Clash for Windows，在主界面或“设置”中找到 **HTTP 代理端口**（通常为 `7890`）和 **SOCKS5 代理端口**（通常为 `7891`）。记下 HTTP 端口号。
+
+#### 2️⃣ 为 Git 配置代理
+打开 **Git Bash**，根据你的代理类型执行以下命令（将端口号替换为你实际的值）：
+
+- **如果你使用的是 HTTP 代理**（Clash 默认提供）：
+  ```bash
+  git config --global http.proxy http://127.0.0.1:7890
+  git config --global https.proxy http://127.0.0.1:7890
+  ```
+
+- **如果你使用的是 SOCKS5 代理**（部分软件可能提供）：
+  ```bash
+  git config --global http.proxy socks5://127.0.0.1:7891
+  git config --global https.proxy socks5://127.0.0.1:7891
+  ```
+
+#### 3️⃣ 验证配置
+配置完成后，可以执行以下命令查看是否生效：
+```bash
+git config --global --get http.proxy
+git config --global --get https.proxy
+```
+
+#### 4️⃣ 取消代理（如果需要）
+如果你更换了网络环境（例如不再使用代理），可以取消代理设置：
+```bash
+git config --global --unset http.proxy
+git config --global --unset https.proxy
+```
+
+> ✅ 配置代理后，`git clone`、`git push` 等操作将通过代理访问 GitHub，速度更快且更稳定。
+
+---
+
 ## 👥 第一次使用：联系仓库管理员加入项目
 
 如果你是第一次参与本项目，需要先获得访问权限：
