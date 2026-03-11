@@ -19,20 +19,29 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="inc\BluetoothMotorController.h" />
+    <ClInclude Include="inc\business\SerialPort.h" />
+    <ClInclude Include="inc\driver\ZAxisDriver.h" />
     <ClInclude Include="inc\framework.h" />
-    <ClInclude Include="inc\Resource.h" />
+    <ClInclude Include="inc\ui\callback.h" />
+    <ClInclude Include="inc\ui\CameraManage.h" />
+    <ClInclude Include="inc\ui\main.h" />
+    <ClInclude Include="res\Resource.h" />
     <ClInclude Include="inc\targetver.h" />
-    <ClInclude Include="inc\transfer_stage_gui.h" />
-    <ClInclude Include="inc\VectorStage.h" />
+    <ClInclude Include="inc\driver\VectorStageDriver.h" />
+    <ClInclude Include="inc\ui\ui_setup.h" />
+    <ClInclude Include="inc\ui\VectorStageControll.h" />
+    <ClInclude Include="inc\ui\ZAxisControll.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\BluetoothMotorController.cpp" />
-    <ClCompile Include="src\callback.cpp" />
-    <ClCompile Include="src\function.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\ui.cpp" />
-    <ClCompile Include="src\VectorStage.cpp" />
+    <ClCompile Include="src\business\SerialPort.cpp" />
+    <ClCompile Include="src\driver\ZAxisDriver.cpp" />
+    <ClCompile Include="src\ui\callback.cpp" />
+    <ClCompile Include="src\ui\CameraManage.cpp" />
+    <ClCompile Include="src\ui\main.cpp" />
+    <ClCompile Include="src\ui\ui_setup.cpp" />
+    <ClCompile Include="src\driver\VectorStageDriver.cpp" />
+    <ClCompile Include="src\ui\VectorStageControll.cpp" />
+    <ClCompile Include="src\ui\ZAxisControll.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\small.ico" />
@@ -139,6 +148,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>ueye_api_64.lib;ueye_tools_64.lib;opencv_world490d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -155,6 +167,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>ueye_api_64.lib;ueye_tools_64.lib;opencv_world490.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

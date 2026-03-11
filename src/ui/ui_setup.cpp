@@ -1,8 +1,13 @@
-#include "transfer_stage_gui.h"
-#include <windows.h>
-#include <commctrl.h>
+#include"ui/main.h"
+#include"ui/ui_setup.h"
+#include"ui/callback.h"
+#include"ui/CameraManage.h"
+#include"ui/VectorStageControll.h"
+#include"ui/ZAxisControll.h"
+#include"framework.h"
 #include <vector>
 #include <string>
+
 
 // 控件句柄定义（全局）
 HWND hComboPort = nullptr;
@@ -34,12 +39,9 @@ HWND hEditYSpeed = nullptr;
 HWND hBtnYPos = nullptr;
 HWND hBtnYNeg = nullptr;
 
+
 void CreateControls(HWND hWnd)
 {
-    // 将原 CreateControls 中的全部代码复制过来
-    // 注意：原代码中使用了 hInst 全局变量，这里仍然有效（在 main.cpp 中定义）
-    // 控件创建代码保持不变...
-    // 记得在最后调用 RefreshSerialPorts() 和 RefreshSerialPortsZ()，以及初始禁用状态
     HFONT hFont = CreateFont(18, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,
         DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
         DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"微软雅黑");
@@ -147,16 +149,6 @@ void CreateControls(HWND hWnd)
         WS_CHILD | WS_VISIBLE,
         1050, 260, 90, 28, hWnd,
         (HMENU)IDC_BTN_X_NEG, hInst, nullptr);
-
-    // ===== Y 轴 =====
-    //CreateWindowW(L"STATIC", L"Y轴 速度:",
-    /*    WS_CHILD | WS_VISIBLE,
-        770, 345, 80, 25, hWnd, nullptr, hInst, nullptr);
-
-    hEditYSpeed = CreateWindowW(L"EDIT", L"1000",
-        WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER,
-        850, 343, 80, 28, hWnd,
-        (HMENU)IDC_EDIT_Y_SPEED, hInst, nullptr);*/
 
     CreateWindowW(L"STATIC", L"位移:",
         WS_CHILD | WS_VISIBLE,
@@ -312,7 +304,6 @@ void CreateControls(HWND hWnd)
         WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
         1410, 130, 190, 35, hWnd, (HMENU)IDC_BTN_DISCONNECT_Z, hInst, nullptr);
     SendMessage(hBtnDisconnectZ, WM_SETFONT, (WPARAM)hFont, TRUE);
-    //EnableWindow(hBtnDisconnectZ, FALSE);
 
     hStaticZStatus = CreateWindowW(L"STATIC", L"Z轴状态: 未连接",
         WS_CHILD | WS_VISIBLE,

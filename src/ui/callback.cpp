@@ -1,5 +1,10 @@
-#include "transfer_stage_gui.h"
-#include <commctrl.h>
+#include"ui/callback.h"
+#include"ui/ui_setup.h"
+#include"ui/CameraManage.h"
+#include"ui/VectorStageControll.h"
+#include"ui/ZAxisControll.h"
+#include"ui/main.h"
+#include"framework.h"
 #include <windowsx.h>  // 需要 GET_X_LPARAM
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -193,7 +198,6 @@ LRESULT CALLBACK ButtonSubclassProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
     // 调用原始窗口过程，确保按钮的正常行为
     return DefSubclassProc(hWnd, uMsg, wParam, lParam);
 }
-
 
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {

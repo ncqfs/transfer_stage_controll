@@ -24,14 +24,14 @@ HBITMAP hCameraBitmap = nullptr;
 std::atomic<bool> cameraRunning(false);
 bool stageConnected = false;
 int stageComPort = 3;
-BluetoothMotorController Zctrl;
+ZAxisDriver Zctrl;
 bool Zconnected = false;
 bool zBtnHeld = false;
 int zMoveDirection = 0;
 // 注意：还有 x_min, x_max 等外部变量，可能在 VectorStage.h 中定义，用 extern 引用即可
 
 // 包含其他必要的头文件
-#include "VectorStage.h"
+#include "VectorStageDriver.h"
 extern HANDLE pdv_hCom;
 extern int x_min, x_max, y_min, y_max, z_min, z_max, l_min, l_max;
 extern int x_home, y_home, z_home, l_home;

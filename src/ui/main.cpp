@@ -1,7 +1,5 @@
-#include "transfer_stage_gui.h"
-#include <windows.h>
-
-#pragma comment(lib, "comctl32.lib")  // 链接库
+#include"ui/ui_setup.h"
+#include"ui/callback.h"
 
 // 全局变量定义（只在 main.cpp 中定义一次）
 HINSTANCE hInst;
