@@ -1,6 +1,7 @@
 #include<opencv2/opencv.hpp>
 #include<ueye.h>
 #include <atomic>
+#include <commdlg.h>
 
 #include"ui/CameraManage.h"
 #include"ui/ui_setup.h"
@@ -221,6 +222,38 @@ void UpdateCameraFrame()
     }
 }
 
+//void CaptureImage()
+//{
+//    if (!cameraConnected)
+//    {
+//        MessageBoxW(GetParent(hBtnCapture), L"相机未连接", L"错误", MB_OK | MB_ICONERROR);
+//        return;
+//    }
+//
+//    cv::Mat frame = GetCurrentFrame();
+//    if (frame.empty())
+//    {
+//        MessageBoxW(GetParent(hBtnCapture), L"无法获取图像", L"错误", MB_OK | MB_ICONERROR);
+//        return;
+//    }
+//
+//    std::ostringstream oss;
+//    oss << "photo_" << std::setw(4) << std::setfill('0') << photoCount++ << ".jpg";
+//    std::string filename = oss.str();
+//
+//    if (cv::imwrite(filename, frame))
+//    {
+//        std::wstringstream wss;
+//        wss << L"图像已保存！\n\n文件名: " << filename.c_str()
+//            << L"\n分辨率: " << camWidth << L"x" << camHeight;
+//        MessageBoxW(GetParent(hBtnCapture), wss.str().c_str(), L"成功", MB_OK | MB_ICONINFORMATION);
+//    }
+//    else
+//    {
+//        MessageBoxW(GetParent(hBtnCapture), L"图像保存失败", L"错误", MB_OK | MB_ICONERROR);
+//    }
+//}
+
 void CaptureImage()
 {
     if (!cameraConnected)
@@ -236,21 +269,40 @@ void CaptureImage()
         return;
     }
 
-    std::ostringstream oss;
-    oss << "photo_" << std::setw(4) << std::setfill('0') << photoCount++ << ".jpg";
-    std::string filename = oss.str();
+    // 弹出文件保存对话框
+    OPENFILENAMEW ofn = { 0 };
+    wchar_t szFile[260] = L"photo_0000.jpg";  // 默认文件名
 
-    if (cv::imwrite(filename, frame))
+    ofn.lStructSize = sizeof(ofn);
+    ofn.hwndOwner = GetParent(hBtnCapture);
+    ofn.lpstrFilter = L"JPEG 图像 (*.jpg)\0*.jpg\0所有文件 (*.*)\0*.*\0";
+    ofn.lpstrFile = szFile;
+    ofn.nMaxFile = 260;
+    ofn.lpstrDefExt = L"jpg";
+    ofn.Flags = OFN_OVERWRITEPROMPT | OFN_HIDEREADONLY | OFN_PATHMUSTEXIST;
+
+    if (GetSaveFileNameW(&ofn))
     {
-        std::wstringstream wss;
-        wss << L"图像已保存！\n\n文件名: " << filename.c_str()
-            << L"\n分辨率: " << camWidth << L"x" << camHeight;
-        MessageBoxW(GetParent(hBtnCapture), wss.str().c_str(), L"成功", MB_OK | MB_ICONINFORMATION);
+        // 用户选择了文件，将宽字符路径转换为 UTF-8 字符串
+        int len = WideCharToMultiByte(CP_UTF8, 0, szFile, -1, nullptr, 0, nullptr, nullptr);
+        std::string filename(len, 0);
+        WideCharToMultiByte(CP_UTF8, 0, szFile, -1, &filename[0], len, nullptr, nullptr);
+        filename.pop_back(); // 移除末尾的 '\0'
+
+        if (cv::imwrite(filename, frame))
+        {
+            std::wstringstream wss;
+            wss << L"图像已保存！\n\n文件名: " << szFile
+                << L"\n分辨率: " << camWidth << L"x" << camHeight;
+            MessageBoxW(GetParent(hBtnCapture), wss.str().c_str(), L"成功", MB_OK | MB_ICONINFORMATION);
+            photoCount++;  // 可保留计数，但文件名已自定义，此步可选
+        }
+        else
+        {
+            MessageBoxW(GetParent(hBtnCapture), L"图像保存失败", L"错误", MB_OK | MB_ICONERROR);
+        }
     }
-    else
-    {
-        MessageBoxW(GetParent(hBtnCapture), L"图像保存失败", L"错误", MB_OK | MB_ICONERROR);
-    }
+    // 用户取消对话框，则什么也不做
 }
 
 void UpdateCameraControlsState(bool enabled)

@@ -59,7 +59,7 @@ void ConnectZ()
     Zconnected = true;
     SetWindowTextW(hStaticZStatus, L"Z轴状态: 已连接");
     UpdateZControlsState(true);
-    std::wstring msg = L"Z轴连接成功！\n\n串口: " + wPortName + L"\n\n请检查蓝牙指示灯：\n常亮：已连接\n闪烁：未连接";
+    std::wstring msg = L"Z轴连接成功！\n\n串口: " + wPortName;// +L"\n\n请检查蓝牙指示灯：\n常亮：已连接\n闪烁：未连接";
     MessageBoxW(GetParent(hComboPortZ), msg.c_str(), L"成功", MB_OK | MB_ICONINFORMATION);
 }
 
