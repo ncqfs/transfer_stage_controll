@@ -1,4 +1,4 @@
-#include "BluetoothMotorController.h"
+#include "driver/ZAxisDriver.h"
 #include <iostream>
 #include <cstring>
 #include <cmath>
@@ -12,7 +12,7 @@
 using namespace std;
 
 // CRC16表定义
-const uint16_t BluetoothMotorController::crc16_table[256] = {
+const uint16_t ZAxisDriver::crc16_table[256] = {
 0x0000, 0xC0C1, 0xC181, 0x0140, 0xC301, 0x03C0, 0x0280, 0xC241,0xC601, 0x06C0,
 
 0x0780, 0xC741, 0x0500, 0xC5C1, 0xC481, 0x0440,0xCC01, 0x0CC0, 0x0D80, 0xCD41,
@@ -62,125 +62,125 @@ const uint16_t BluetoothMotorController::crc16_table[256] = {
 
 
 
-// 辅助函数实现
-std::string wstringToString(const std::wstring& wstr) {
-#ifdef _WIN32
-	if (wstr.empty()) {
-		return std::string();
-	}
-
-	int size = WideCharToMultiByte(CP_ACP, 0, &wstr[0], (int)wstr.size(),
-		NULL, 0, NULL, NULL);
-	std::string ret = std::string(size, 0);
-	WideCharToMultiByte(CP_ACP, 0, &wstr[0], (int)wstr.size(),
-		&ret[0], size, NULL, NULL);
-	return ret;
-#else
-	// Linux版本（如果需要跨平台）
-	std::string result;
-	for (wchar_t wc : wstr) {
-		result += static_cast<char>(wc & 0xFF);
-	}
-	return result;
-#endif
-}
-
-// 枚举系统中的串口设备（Windows）
-bool enumDetailsSerialPorts(std::vector<SerialPortInfo>& portInfoList)
-{
-#ifdef _WIN32
-	// 注册表句柄
-	HKEY hKey;
-
-	// 注册表字符串最大长度
-	const int MAX_VALUE_NAME = 16383;
-
-	// 注册表值名（如 \Device\Serial0）
-	TCHAR achValue[MAX_VALUE_NAME];
-
-	// 注册表值数据（如 COM3）
-	TCHAR strDSName[MAX_VALUE_NAME];
-
-	// 打开串口映射注册表
-	if (ERROR_SUCCESS == RegOpenKeyEx(
-		HKEY_LOCAL_MACHINE,
-		_T("HARDWARE\\DEVICEMAP\\SERIALCOMM"),
-		0,
-		KEY_READ,
-		&hKey))
-	{
-		DWORD cKeyNum = 0;
-
-		// 查询注册表中值的数量
-		if (ERROR_SUCCESS == RegQueryInfoKey(
-			hKey,
-			NULL, NULL, NULL,
-			NULL, NULL, NULL,
-			&cKeyNum,
-			NULL, NULL, NULL, NULL))
-		{
-			// 清空输出列表
-			portInfoList.clear();
-
-			// 枚举所有串口项
-			for (DWORD i = 0; i < cKeyNum; i++)
-			{
-				DWORD cchValue = MAX_VALUE_NAME;
-				DWORD nBuffLen = MAX_VALUE_NAME;
-
-				if (ERROR_SUCCESS == RegEnumValue(
-					hKey,
-					i,
-					achValue,
-					&cchValue,
-					NULL,
-					NULL,
-					(LPBYTE)strDSName,
-					&nBuffLen))
-				{
-					SerialPortInfo info;
-
-#ifdef UNICODE
-					info.portName = wstringToString(strDSName);
-#else
-					info.portName = std::string(strDSName);
-#endif
-					portInfoList.push_back(info);
-				}
-			}
-		}
-
-		RegCloseKey(hKey);
-		return !portInfoList.empty();
-	}
-
-	return false;
-#else
-	// 非 Windows 平台未实现
-	return false;
-#endif
-}
+//// 辅助函数实现
+//std::string wstringToString(const std::wstring& wstr) {
+//#ifdef _WIN32
+//	if (wstr.empty()) {
+//		return std::string();
+//	}
+//
+//	int size = WideCharToMultiByte(CP_ACP, 0, &wstr[0], (int)wstr.size(),
+//		NULL, 0, NULL, NULL);
+//	std::string ret = std::string(size, 0);
+//	WideCharToMultiByte(CP_ACP, 0, &wstr[0], (int)wstr.size(),
+//		&ret[0], size, NULL, NULL);
+//	return ret;
+//#else
+//	// Linux版本（如果需要跨平台）
+//	std::string result;
+//	for (wchar_t wc : wstr) {
+//		result += static_cast<char>(wc & 0xFF);
+//	}
+//	return result;
+//#endif
+//}
+//
+//// 枚举系统中的串口设备（Windows）
+//bool enumDetailsSerialPorts(std::vector<SerialPortInfo>& portInfoList)
+//{
+//#ifdef _WIN32
+//	// 注册表句柄
+//	HKEY hKey;
+//
+//	// 注册表字符串最大长度
+//	const int MAX_VALUE_NAME = 16383;
+//
+//	// 注册表值名（如 \Device\Serial0）
+//	TCHAR achValue[MAX_VALUE_NAME];
+//
+//	// 注册表值数据（如 COM3）
+//	TCHAR strDSName[MAX_VALUE_NAME];
+//
+//	// 打开串口映射注册表
+//	if (ERROR_SUCCESS == RegOpenKeyEx(
+//		HKEY_LOCAL_MACHINE,
+//		_T("HARDWARE\\DEVICEMAP\\SERIALCOMM"),
+//		0,
+//		KEY_READ,
+//		&hKey))
+//	{
+//		DWORD cKeyNum = 0;
+//
+//		// 查询注册表中值的数量
+//		if (ERROR_SUCCESS == RegQueryInfoKey(
+//			hKey,
+//			NULL, NULL, NULL,
+//			NULL, NULL, NULL,
+//			&cKeyNum,
+//			NULL, NULL, NULL, NULL))
+//		{
+//			// 清空输出列表
+//			portInfoList.clear();
+//
+//			// 枚举所有串口项
+//			for (DWORD i = 0; i < cKeyNum; i++)
+//			{
+//				DWORD cchValue = MAX_VALUE_NAME;
+//				DWORD nBuffLen = MAX_VALUE_NAME;
+//
+//				if (ERROR_SUCCESS == RegEnumValue(
+//					hKey,
+//					i,
+//					achValue,
+//					&cchValue,
+//					NULL,
+//					NULL,
+//					(LPBYTE)strDSName,
+//					&nBuffLen))
+//				{
+//					SerialPortInfo info;
+//
+//#ifdef UNICODE
+//					info.portName = wstringToString(strDSName);
+//#else
+//					info.portName = std::string(strDSName);
+//#endif
+//					portInfoList.push_back(info);
+//				}
+//			}
+//		}
+//
+//		RegCloseKey(hKey);
+//		return !portInfoList.empty();
+//	}
+//
+//	return false;
+//#else
+//	// 非 Windows 平台未实现
+//	return false;
+//#endif
+//}
 
 
 // 类成员函数实现
-BluetoothMotorController::BluetoothMotorController()
+ZAxisDriver::ZAxisDriver()
 	: isConnected(false), pulseNumPerCircle(32768) {
 #ifdef _WIN32
 	hSerial = INVALID_HANDLE_VALUE;
 #endif
 }
 
-BluetoothMotorController::~BluetoothMotorController() {
+ZAxisDriver::~ZAxisDriver() {
 	stopMotor();
 	disconnect();
 }
 
-std::string BluetoothMotorController::workMode()
+std::string ZAxisDriver::workMode()
 {
 	return this->mode;
 }
 
-bool BluetoothMotorController::connect(const std::string& portName, uint32_t baudRate) {
+bool ZAxisDriver::connect(const std::string& portName, uint32_t baudRate) {
 #ifdef _WIN32
 	// 1. 构造完整的设备名
 	std::string fullPortName = "\\\\.\\" + portName;
@@ -258,7 +258,7 @@ bool BluetoothMotorController::connect(const std::string& portName, uint32_t bau
 #endif
 }
 
-void BluetoothMotorController::disconnect() {
+void ZAxisDriver::disconnect() {
 #ifdef _WIN32
 	if (hSerial != INVALID_HANDLE_VALUE) {
 		CloseHandle(hSerial);
@@ -269,7 +269,7 @@ void BluetoothMotorController::disconnect() {
 #endif
 }
 
-bool BluetoothMotorController::connected() const {
+bool ZAxisDriver::connected() const {
 #ifdef _WIN32
 	return isConnected && (hSerial != INVALID_HANDLE_VALUE);
 #else
@@ -277,7 +277,7 @@ bool BluetoothMotorController::connected() const {
 #endif
 }
 
-bool BluetoothMotorController::sendData(const uint8_t* data, size_t length) {
+bool ZAxisDriver::sendData(const uint8_t* data, size_t length) {
 #ifdef _WIN32
 	if (!connected()) {
 		cerr << "未连接到串口" << endl;
@@ -314,14 +314,14 @@ bool BluetoothMotorController::sendData(const uint8_t* data, size_t length) {
 #endif
 }
 
-void BluetoothMotorController::extractByte(uint32_t value, uint8_t* bytes) {
+void ZAxisDriver::extractByte(uint32_t value, uint8_t* bytes) {
 	bytes[0] = (value >> 8) & 0xFF;
 	bytes[1] = (value >> 0) & 0xFF;
 	bytes[2] = (value >> 24) & 0xFF;
 	bytes[3] = (value >> 16) & 0xFF;
 }
 
-void BluetoothMotorController::crc16_modbus(const uint8_t* data, size_t length, uint8_t* storage) {
+void ZAxisDriver::crc16_modbus(const uint8_t* data, size_t length, uint8_t* storage) {
 	uint16_t crc = 0xFFFF;
 
 	for (size_t i = 0; i < length; i++) {
@@ -334,7 +334,7 @@ void BluetoothMotorController::crc16_modbus(const uint8_t* data, size_t length, 
 	storage[0] = crc & 0xFF;
 }
 
-void BluetoothMotorController::checksum(const uint8_t* data, size_t length, uint8_t* storage) {
+void ZAxisDriver::checksum(const uint8_t* data, size_t length, uint8_t* storage) {
 	uint8_t cksum = 0;
 	for (size_t i = 0; i < length; i++) {
 		cksum += data[i];
@@ -342,7 +342,7 @@ void BluetoothMotorController::checksum(const uint8_t* data, size_t length, uint
 	*storage = cksum;
 }
 
-bool BluetoothMotorController::rotateAngle(double degree) {
+bool ZAxisDriver::rotateAngle(double degree) {
 	if (!connected()) {
 		cerr << "设备未连接" << endl;
 		return false;
@@ -369,7 +369,7 @@ bool BluetoothMotorController::rotateAngle(double degree) {
 	return sendData(cmd, 16);
 }
 
-//bool BluetoothMotorController::rotatePulse(int pulseNum)
+//bool ZAxisDriver::rotatePulse(int pulseNum)
 //{
 //    if (!connected()) {
 //        cerr << "设备未连接" << endl;
@@ -388,7 +388,7 @@ bool BluetoothMotorController::rotateAngle(double degree) {
 //    return sendData(cmd, 16);
 //}
 
-bool BluetoothMotorController::rotateSpeed(short speed)
+bool ZAxisDriver::rotateSpeed(short speed)
 {
 	if (mode != "speed") {
 		setSpeedMode();
@@ -405,7 +405,7 @@ bool BluetoothMotorController::rotateSpeed(short speed)
 }
 
 // 可以添加更多控制函数
-bool BluetoothMotorController::stopMotor() {
+bool ZAxisDriver::stopMotor() {
 	// 实现停止指令
 	if (mode != "speed") {
 		setSpeedMode();
@@ -414,7 +414,7 @@ bool BluetoothMotorController::stopMotor() {
 	return sendData(stopCmd, sizeof(stopCmd));
 }
 
-bool BluetoothMotorController::setPositionMode()
+bool ZAxisDriver::setPositionMode()
 {
 	if (mode == "position") return false;
 	uint8_t cmd[] = { 0xAA, 0x0B, 0x01, 0x06, 0x00, 0x19, 0x00, 0x00, 0x58, 0x0D, 0x3A };
@@ -423,7 +423,7 @@ bool BluetoothMotorController::setPositionMode()
 	return success;
 }
 
-bool BluetoothMotorController::setSpeedMode()
+bool ZAxisDriver::setSpeedMode()
 {
 	if (mode == "speed") return false;
 	uint8_t cmd[] = { 0xAA, 0x0B, 0x01, 0x06, 0x00, 0x19, 0x00, 0x03, 0x18, 0x0C, 0xFC };

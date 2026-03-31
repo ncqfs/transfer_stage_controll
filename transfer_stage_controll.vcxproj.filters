@@ -11,36 +11,90 @@
     <Filter Include="资源文件">
       <UniqueIdentifier>{a3fc14fd-3053-47ce-8f58-c0ea5a9a6c97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\界面">
+      <UniqueIdentifier>{23b5a8d0-0da2-4e72-8a62-b27bb4fe1ed4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\功能">
+      <UniqueIdentifier>{76e0d851-6e93-4ca3-96bc-ad8f8572376d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\驱动">
+      <UniqueIdentifier>{0cf7cdf6-3d9a-4ee0-87b6-9788930fac3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\驱动">
+      <UniqueIdentifier>{f4d9193b-908c-4703-a155-2d1d052c74d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\功能">
+      <UniqueIdentifier>{f15e3ef6-d4a3-448f-b69a-6b8f91c13663}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\界面">
+      <UniqueIdentifier>{a81e0bd3-94a2-4d50-9f3f-baaf2d1109d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="inc\BluetoothMotorController.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="inc\framework.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="inc\targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="inc\transfer_stage_gui.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="res\Resource.h">
+      <Filter>头文件\界面</Filter>
     </ClInclude>
-    <ClInclude Include="inc\VectorStage.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="inc\driver\VectorStageDriver.h">
+      <Filter>头文件\驱动</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\driver\ZAxisDriver.h">
+      <Filter>头文件\驱动</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\ui\ZAxisControll.h">
+      <Filter>头文件\界面</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\ui\VectorStageControll.h">
+      <Filter>头文件\界面</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\ui\ui_setup.h">
+      <Filter>头文件\界面</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\ui\main.h">
+      <Filter>头文件\界面</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\ui\callback.h">
+      <Filter>头文件\界面</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\ui\CameraManage.h">
+      <Filter>头文件\界面</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\business\SerialPort.h">
+      <Filter>头文件\功能</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\BluetoothMotorController.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="src\driver\ZAxisDriver.cpp">
+      <Filter>源文件\驱动</Filter>
     </ClCompile>
-    <ClCompile Include="src\transfer_stage_gui.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="src\driver\VectorStageDriver.cpp">
+      <Filter>源文件\驱动</Filter>
     </ClCompile>
-    <ClCompile Include="src\VectorStage.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="src\ui\callback.cpp">
+      <Filter>源文件\界面</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\main.cpp">
+      <Filter>源文件\界面</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\ui_setup.cpp">
+      <Filter>源文件\界面</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\ZAxisControll.cpp">
+      <Filter>源文件\界面</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\CameraManage.cpp">
+      <Filter>源文件\界面</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\VectorStageControll.cpp">
+      <Filter>源文件\界面</Filter>
+    </ClCompile>
+    <ClCompile Include="src\business\SerialPort.cpp">
+      <Filter>源文件\功能</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
